@@ -1,30 +1,36 @@
-const moment = require('moment')
+const { log } = require('console')
 const fs = require('fs-extra')
-
-fs.readFileSync('./txt.txt','utf-8')
 
 
 const http = require('http')
 
+
 const arr = [
-    {id: 1, topic:'hello'}
+    { id: 1, topic: 'hello' },
+    { id: 2, topic: 'I want to store a JPEG file in an Attachment object. The source of this JPEG file is an HttpRequest Object' }
 ]
 
 const server = http.createServer((req, res) => {
-    console.log(req.url);
-    if(req.url = '/img'){
-        res.end()
+    if (req.url === "/cat.jpg") {
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "image/jpeg");
+        fs.readFile("./image/cat.jpg", (err, image) => {
+            res.end(image);
+            return
+        });  // return res.end('mother fucker');
     }
-    let id = Number(req.url.match(/\d+$/ig))
-    for(let i = 0; i < arr.length; i++){
-        if(id === arr[i].id){
-            res.end(arr[i].topic)
+    else if (req.url == req.url.match(/\/\d+$/ig)) {
+        for (let i = 0; arr.length; i++) {
+            let id = Number(req.url.match(/\d+$/ig))
+            if (arr[i].id == id) {
+                return res.end(arr[i].topic);;
+            }
+            return res.end('not found 404')
         }
-        else {
-            res.end('mother fucker')
-        }
+    }
+    else {
+        res.end('not found 404')
     }
 })
 
-server.listen(3001)
-console.log('run')
+server.listen(2000)
